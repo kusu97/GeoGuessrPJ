@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Conda
+.env
+.venv
+conda-env/
+env/
+*.conda
+
+# Data
+images_for_single_test/
+osv5m_dataset/
+records/
+*.csv
+*.json
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# External references
+references/
+
+# Unfinished scripts
+scripts/
