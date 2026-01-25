@@ -40,6 +40,7 @@ The focus of this stage is **not performance optimization**, but:
 
 ## 3. Project Structure
 
+```
 .
 ├── geodatasets/ # GeoGuessr-style street-view datasets
 ├── models/ # Model interface codes
@@ -53,7 +54,7 @@ The focus of this stage is **not performance optimization**, but:
 ├── utils/ # Utility scripts
 ├── README.md
 └── environment.yml
-
+```
 
 > Note: The structure may be modified during future experiments.
 
