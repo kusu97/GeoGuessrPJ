@@ -11,7 +11,6 @@ class Prediction:
         return asdict(self)
 
 class BaseModel(ABC):
-    name: str = "base"
 
     @abstractmethod
     def predict(self, image_path: str, prompt: str) -> Prediction:
