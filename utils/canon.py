@@ -1,5 +1,10 @@
 '''
-A script adapted from the GeoComp project for checking if two country names refer to the same canonical country.
+This file is adapted from:
+https://github.com/ccmdi/geobench/blob/main/geo2p/canon.py
+Original author: ccmdi
+License: MIT
+
+A script for checking if two country names refer to the same canonical country.
 
 Note: To accommodate the two-letter country codes (ISO 3166-1 alpha-2) used in the OSV-5M dataset, 
 appropriate additions were made to COUNTRY_GROUPS. (see country_codes_in_osv5m.txt)

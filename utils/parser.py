@@ -1,5 +1,10 @@
 '''
-A script adapted from the GeoComp project for extracting geographic information from MLLM responses.
+This file is adapted from:
+https://github.com/ccmdi/geobench/blob/main/scripts/parser.py
+Original author: ccmdi
+License: MIT
+
+A script for extracting geographic information from MLLM responses.
 '''
 
 from models.base import Prediction
