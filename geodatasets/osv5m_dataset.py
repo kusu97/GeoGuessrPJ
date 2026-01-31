@@ -5,6 +5,10 @@ from geodatasets.base import BaseDataset
 class Osv5mDataset(BaseDataset):
     """
     Adapter for osv5m (HuggingFace osv5m dataset)
+
+    osv5m: 
+    https://github.com/gastruc/osv5m
+    https://huggingface.co/datasets/osv5m/osv5m
     """
 
     def __init__(self, csv_path='./geodatasets/osv5m_dataset/labels/test.csv', 

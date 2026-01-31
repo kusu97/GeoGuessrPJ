@@ -20,6 +20,8 @@ class GeoBenchGT:
 class GeoBenchAdapter(BaseBenchmark):
     """
     Adapter for GeoBench-style evaluation
+    
+    geobench: https://github.com/ccmdi/geobench
     """
 
     def __init__(self):
