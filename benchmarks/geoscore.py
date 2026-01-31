@@ -25,10 +25,14 @@ class GeoScore(BaseBenchmark):
         self.summary = {}       # Store the summary for the entire dataset
     
     def calculate_geoscore(self, distance_km):
-        '''An empirical formula summarized from actual gameplay on the World map in GeoGuessr.'''
-        if distance_km * 1000 <= 25:
-            return 5000
-        return round(5000 * math.exp(-10.0 * distance_km / 14916.862))
+        '''
+        The formula for the GeoGuessr score was reverse-engineered by recording results from the game. 
+        The formula on the world map is approximately calculated in the following way.
+        
+        This formula is taken from Haas, L., Skreta, M., Alberti, S., & Finn, C. (2023). 
+        PIGEON: Predicting Image Geolocations (Version 6). arXiv. https://doi.org/10.48550/ARXIV.2307.05845
+        '''
+        return round(5000 * math.exp(-distance_km / 1492.7))
 
     def _get_GT_from_sample(self, sample: dict):
         return GeoScoreGT(lat=sample["lat"], lng=sample["lng"])
