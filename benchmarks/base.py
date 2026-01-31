@@ -9,14 +9,18 @@ class BaseBenchmark(ABC):
         sample: one sample in the dataset
             MUST be a dict with keys:
             - image_path
-            - country
             - lat
             - lng
+            - country (optional)
         pred: model prediction
         return: dict of sample information and metrics
         """
         pass
 
     @abstractmethod
-    def summarize(self):
+    def summarize(self) -> dict:
+        pass
+
+    @abstractmethod
+    def save_results(self, save_dir: str, extra_meta: dict | None) -> None:
         pass
