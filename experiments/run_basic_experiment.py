@@ -18,13 +18,14 @@ from geodatasets.osv5m_dataset import Osv5mDataset
 from prompts.prompt_manager import PromptManager
 from benchmarks.geobench_adapter import GeoBenchAdapter
 from benchmarks.geoscore import GeoScore
+from benchmarks.osv5m_adapter import OSV5MAdapter
 from models.dummy_model import DummyModel
 from models.qwen import QwenModel
 
 def main():
     # 1. Prepare the dataset
-    dataset = SingleSample()
-    # dataset = Osv5mDataset(max_samples=10)
+    # dataset = SingleSample()
+    dataset = Osv5mDataset(max_samples=10)
     # dataset = Osv5mDataset(max_samples=1)
 
     # 2. Load the prompt
@@ -34,7 +35,8 @@ def main():
 
     # 3. Initialize the benchmark
     # benchmark = GeoBenchAdapter()
-    benchmark = GeoScore()
+    # benchmark = GeoScore()
+    benchmark = OSV5MAdapter()
 
     # 4. Initialize the model
     model = DummyModel()
@@ -53,22 +55,8 @@ def main():
         # Evaluate using the benchmark
         result = benchmark.evaluate(sample, pred)
 
-        # Print the metrics.
-        # print(
-        #     f"[{i+1}/{len(dataset)}] "
-        #     f"Distance={result['metrics']['distance_km']:.1f} km | "
-        #     f"Score={result['metrics']['score']} | "
-        #     f"CountryCorrect={result['metrics']['country_correct']}"
-        # )
-
     # 6. Summarize the performance of the entire dataset on the benchmark
     summary = benchmark.summarize()
-
-    # Print the summary
-    # print("\n=== Experiment Summary ===")
-    # print(f"Average Distance (km): {summary['avg_distance']:.1f}")
-    # print(f"Average Score: {summary['avg_score']:.1f}")
-    # print(f"Country Accuracy: {summary['country_acc']:.2%}")
 
     # 7. Save all the information from the experiment
     extra_meta={
