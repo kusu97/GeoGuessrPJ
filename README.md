@@ -1,9 +1,9 @@
-# GeoGuessr with Multimodal Large Language Models
+# GeoGuessrPJ: GeoGuessr with Multimodal Large Language Models
 
-This repository is an experimental project for **Task 1-2 (Experimental Platform Setup)** of the research topic  
+This repository is an experimental project for the research topic  
 **“First-Person Streaming Visual Agents — Starting from GeoGuessr”**.
 
-The goal of this project is to build a **minimal and reproducible pipeline** that evaluates the geolocation ability of multimodal large language models (MLLMs) on GeoGuessr-style tasks.
+The goal of this project is to build a **complete and reproducible pipeline** that evaluates the geolocation ability of multimodal large language models (MLLMs) on GeoGuessr-style tasks. In addition, we aim to further explore potential improvement strategies.
 
 ---
 
@@ -15,9 +15,6 @@ In this project, we:
 - Use **multimodal large language models via online APIs**
 - Perform **location prediction from street-view images**
 - Evaluate predictions using **standard geolocation benchmarks**
-
-The focus of this stage is **not performance optimization**, but:
-> building a complete pipeline from image input → model inference → benchmark evaluation.
 
 ---
 
@@ -33,8 +30,9 @@ The focus of this stage is **not performance optimization**, but:
   - Country (optional)
 
 ### Evaluation
-- Distance-based geolocation metrics (e.g. average error in kilometers)
+- Distance-based geolocation metrics (e.g. average error in kilometers, radius accuracy)
 - Benchmark-provided scores (e.g. GeoScore)
+- Administrative accuracy (e.g. country accuracy)   
 
 ---
 
@@ -44,12 +42,12 @@ The focus of this stage is **not performance optimization**, but:
 .
 ├── geodatasets/ # GeoGuessr-style street-view datasets
 ├── models/ # Model interface codes
-├── benchmarks/ # Geolocation benchmark code
+├── benchmarks/ # Geolocation benchmark codes
 ├── prompts/ # Different prompts
 ├── experiments/
 │ └── run_basic_experiment.py # Run basic experiment
 ├── records/ # Records of experiment results
-├── references/ # Other project repositories used as references
+├── references/ # Other project scripts used as references
 ├── scripts/ # Various scripts to be refined and archived
 ├── utils/ # Utility scripts
 ├── README.md
@@ -60,7 +58,7 @@ The focus of this stage is **not performance optimization**, but:
 
 ---
 
-## 4. Models Used
+## 4. Models
 
 This project primarily uses **online multimodal model APIs**, such as:
 - qwen3-vl-plus
@@ -71,8 +69,10 @@ The choice of API allows rapid experimentation without local deployment constrai
 
 ## 5. Benchmarks
 
-Standard GeoGuessr-style geolocation benchmarks are used, including:
+Standard **GeoGuessr-style geolocation benchmarks** are used, including:
 - GeoBench
+- GeoScore
+- Osv-5m
 
 The benchmark is executed **locally**, while model inference is performed via API calls.
 
@@ -81,27 +81,17 @@ The benchmark is executed **locally**, while model inference is performed via AP
 ## 6. Datasets
 
 This project uses **GeoGuessr-style street-view image datasets** for visual geolocation experiments, such as:
+- FairLocator
 - Osv-5m
 
 ---
 
-## 7. Workflow
+## 7. Basic Workflow
 
-The experimental pipeline follows these steps:
+The basic experimental pipeline follows these steps:
 
 1. Load a street-view dataset
 2. Send image + prompt to a multimodal model API
 3. Parse the model’s textual output to obtain geographic information
 4. Run benchmark evaluation
 5. Analyze and save results
-
----
-
-## 8. Current Status
-
-- [x] Basic understanding of LLM / MLLM concepts
-- [x] API-based multimodal inference
-- [x] Benchmark integration (initial)
-- [ ] Large-scale evaluation
-- [ ] Prompt engineering and analysis
-- [ ] Error case analysis
