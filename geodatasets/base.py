@@ -16,5 +16,8 @@ class BaseDataset(ABC):
             - lng
             May contain additional keys:
             - country
+            - continent
+            - city
+            - street
         """
         pass

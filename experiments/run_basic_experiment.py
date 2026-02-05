@@ -15,6 +15,7 @@ are built upon the same pipeline structure defined here.
 
 from geodatasets.single_test_sample import SingleSample
 from geodatasets.osv5m_dataset import Osv5mDataset
+from geodatasets.fairlocator_dataset import FairLocatorDataset
 from prompts.prompt_manager import PromptManager
 from benchmarks.geobench_adapter import GeoBenchAdapter
 from benchmarks.geoscore import GeoScore
@@ -25,8 +26,9 @@ from models.qwen import QwenModel
 def main():
     # 1. Prepare the dataset
     # dataset = SingleSample()
-    dataset = Osv5mDataset(max_samples=10)
+    # dataset = Osv5mDataset(max_samples=10)
     # dataset = Osv5mDataset(max_samples=1)
+    dataset = FairLocatorDataset(dataset_name="Breadth", max_samples=5)
 
     # 2. Load the prompt
     prompt_manager = PromptManager()
