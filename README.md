@@ -61,7 +61,7 @@ In this project, we:
 ## 4. Models
 
 This project primarily uses **online multimodal model APIs**, such as:
-- qwen3-vl-plus
+- Qwen-vl series
 
 The choice of API allows rapid experimentation without local deployment constraints.
 
