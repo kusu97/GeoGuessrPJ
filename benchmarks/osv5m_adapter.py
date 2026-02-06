@@ -96,7 +96,7 @@ class OSV5MAdapter(BaseBenchmark):
             pred_val = pred_area.get(area)
 
             if gt_val is None or gt_val == "":
-                if pred_val is not None or pred_val != "":
+                if pred_val is not None and pred_val != "":
                     already_false = True
                 continue
             
