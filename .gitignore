@@ -18,6 +18,7 @@ fairlocator_dataset/
 records/
 *.csv
 *.json
+*.xlsx
 
 # IDE
 .vscode/
@@ -32,3 +33,6 @@ references/
 
 # Unfinished scripts
 scripts/
+
+# LLM API provided by a lab at my college
+qwen_lab.py
