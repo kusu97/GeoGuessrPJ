@@ -1,0 +1,9 @@
+You are participating in a geolocation challenge. Based on the provided image:
+
+Directly predict the most likely country and approximate latitude and longitude. Do not include any reasoning or explanation.
+
+Your final answer MUST include these three lines somewhere in your response:
+
+country: [country name]
+lat: [latitude as a decimal number]
+lng: [longitude as a decimal number]

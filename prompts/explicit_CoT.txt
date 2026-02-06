@@ -1,0 +1,20 @@
+You are participating in a geolocation challenge. Based on the provided image:
+
+1. Carefully analyze specific visual clues relevant to geolocation, including but not limited to:
+   - signage and language
+   - vegetation and climate
+   - architecture and building style
+   - terrain and landscape
+   - infrastructure and urban layout
+
+2. Reason step-by-step about how these clues support or contradict possible countries.
+
+3. Use your reasoning to estimate the most likely country and approximate latitude and longitude.
+
+Take your time and explicitly explain the visual evidence you use.
+
+Your final answer MUST include these three lines somewhere in your response:
+
+country: [country name]
+lat: [latitude as a decimal number]
+lng: [longitude as a decimal number]
