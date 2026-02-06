@@ -13,6 +13,8 @@ All extended experiments (e.g., prompt ablation and model comparison)
 are built upon the same pipeline structure defined here.
 '''
 
+from tqdm import tqdm
+
 from geodatasets.single_test_sample import SingleSample
 from geodatasets.osv5m_dataset import Osv5mDataset
 from geodatasets.fairlocator_dataset import FairLocatorDataset
@@ -21,14 +23,16 @@ from benchmarks.geobench_adapter import GeoBenchAdapter
 from benchmarks.geoscore import GeoScore
 from benchmarks.osv5m_adapter import OSV5MAdapter
 from models.dummy_model import DummyModel
-from models.qwen import QwenModel
+# from models.qwen import QwenModel
+from models.qwen_lab import QwenModel
 
 def main():
     # 1. Prepare the dataset
     # dataset = SingleSample()
     # dataset = Osv5mDataset(max_samples=10)
     # dataset = Osv5mDataset(max_samples=1)
-    dataset = FairLocatorDataset(dataset_name="Breadth", max_samples=5)
+    # dataset = FairLocatorDataset(dataset_name="Breadth", max_samples=5)
+    dataset = FairLocatorDataset(dataset_name="Breadth", max_samples=None)
 
     # 2. Load the prompt
     prompt_manager = PromptManager()
@@ -44,9 +48,10 @@ def main():
     model = DummyModel()
     # model = QwenModel(model_name="qwen-vl-max-2025-04-08", enable_thinking=False, save_responses=True)
     # model = QwenModel(model_name="qwen-vl-max-2025-04-08", enable_thinking=True, save_responses=True)
+    # model = QwenModel(model_name="Qwen3-VL-8B-Instruct", enable_thinking=False, save_responses=True)
 
     # 5. Start the evaluation
-    for i in range(len(dataset)):
+    for i in tqdm(range(len(dataset)), desc="Evaluating"):
         # Get the image and information of each sample
         sample = dataset.get_sample(i)
         image_path = sample["image_path"]
