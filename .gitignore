@@ -34,5 +34,6 @@ references/
 # Unfinished scripts
 scripts/
 
-# LLM API provided by a lab at my college
-qwen_lab.py
+# LLM APIs provided by a lab at my college
+qwen_lab_instruct.py
+qwen_lab_thinking.py
