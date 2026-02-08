@@ -23,20 +23,23 @@ from benchmarks.geobench_adapter import GeoBenchAdapter
 from benchmarks.geoscore import GeoScore
 from benchmarks.osv5m_adapter import OSV5MAdapter
 from models.dummy_model import DummyModel
-# from models.qwen import QwenModel
-from models.qwen_lab import QwenModel
+from models.qwen import QwenModel
+# from models.qwen_lab_instruct import QwenModel
+# from models.qwen_lab_thinking import QwenModel
 
 def main():
     # 1. Prepare the dataset
     # dataset = SingleSample()
-    # dataset = Osv5mDataset(max_samples=10)
-    # dataset = Osv5mDataset(max_samples=1)
-    # dataset = FairLocatorDataset(dataset_name="Breadth", max_samples=5)
-    dataset = FairLocatorDataset(dataset_name="Breadth", max_samples=None)
+    dataset = Osv5mDataset(max_samples=10)
+    # dataset = FairLocatorDataset(dataset_name="Breadth", max_samples=None)
 
     # 2. Load the prompt
     prompt_manager = PromptManager()
-    prompt_name = "geobench"
+    # prompt_name = "geobench"
+    prompt_name = "explicit_CoT"
+    # prompt_name = "light_reasoning"
+    # prompt_name = "direct_prediction"
+    # prompt_name = "expert_persona"
     prompt = prompt_manager.get_prompt(prompt_name)
 
     # 3. Initialize the benchmark
@@ -45,10 +48,11 @@ def main():
     benchmark = OSV5MAdapter()
 
     # 4. Initialize the model
-    model = DummyModel()
+    # model = DummyModel()
     # model = QwenModel(model_name="qwen-vl-max-2025-04-08", enable_thinking=False, save_responses=True)
-    # model = QwenModel(model_name="qwen-vl-max-2025-04-08", enable_thinking=True, save_responses=True)
+    model = QwenModel(model_name="qwen3-vl-plus", enable_thinking=True, save_responses=True)
     # model = QwenModel(model_name="Qwen3-VL-8B-Instruct", enable_thinking=False, save_responses=True)
+    # model = QwenModel(model_name="Qwen3-VL-8B-Thinking", enable_thinking=False, save_responses=True)
 
     # 5. Start the evaluation
     for i in tqdm(range(len(dataset)), desc="Evaluating"):
