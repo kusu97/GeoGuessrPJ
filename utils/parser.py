@@ -14,19 +14,19 @@ def parse_response(response: str) -> Prediction:
     # Look for the final answer section that matches the required format
     final_answer_match = re.search(
         # Country part:
-        r"(?:^|\n)(?:\*\*)?(?:country|Country)(?:\*\*)?:\s*"  # Keyword (optionally **keyword**), colon, initial space
+        r"(?:^|\n)\s*(?:\*\*)?(?:country|Country)(?:\*\*)?:\s*"  # Keyword (optionally **keyword**), colon, initial space
         r"(\*+)?\s*([^,\r\n]+?)\s*(\*+)?"                  # Optional value wrapper (* or ** etc.), internal spaces, country name, internal spaces, optional value wrapper
         r"\s*(?:\n|$)"                                      # Trailing space and newline/end
         # Separator:
         r".*?"
         # Latitude part:
-        r"(?:^|\n)(?:\*\*)?(?:lat|Lat)(?:\*\*)?:\s*"          # Keyword (optionally **keyword**), colon, initial space
+        r"(?:^|\n)\s*(?:\*\*)?(?:lat|Lat)(?:\*\*)?:\s*"          # Keyword (optionally **keyword**), colon, initial space
         r"(\*+)?\s*([-+]?\d+\.?\d*?)\s*(\*+)?"              # Optional value wrapper (* or ** etc.), internal spaces, lat number, internal spaces, optional value wrapper
         r"\s*(?:\n|$)"                                      # Trailing space and newline/end
         # Separator:
         r".*?"
         # Longitude part:
-        r"(?:^|\n)(?:\*\*)?(?:lng|Lng)(?:\*\*)?:\s*"          # Keyword (optionally **keyword**), colon, initial space
+        r"(?:^|\n)\s*(?:\*\*)?(?:lng|Lng)(?:\*\*)?:\s*"          # Keyword (optionally **keyword**), colon, initial space
         r"(\*+)?\s*([-+]?\d+\.?\d*?)\s*(\*+)?"              # Optional value wrapper (* or ** etc.), internal spaces, lng number, internal spaces, optional value wrapper
         r"\s*(?:\n|$)",                                     # Trailing space and newline/end
         response,
