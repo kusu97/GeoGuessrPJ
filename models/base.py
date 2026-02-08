@@ -13,7 +13,7 @@ class Prediction:
 class BaseModel(ABC):
 
     @abstractmethod
-    def predict(self, image_path: str, prompt: str) -> Prediction:
+    def predict(self, image_path: str, prompt: str) -> Prediction | None:
         """
         image_path: path to image
         prompt: full prompt text

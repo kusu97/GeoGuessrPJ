@@ -1,5 +1,5 @@
 from models.base import BaseModel
-from utils.parser import parse_response
+from utils.parser import parse_response_with_exception_handler
 from openai import OpenAI
 import os
 import base64
@@ -185,7 +185,7 @@ class QwenModel(BaseModel):
         if self.save_responses:
             self.save_response(prompt, image_path, response)
         answer_content = response["answer_content"]
-        pred = parse_response(answer_content)
+        pred = parse_response_with_exception_handler(answer_content)    # pred = None if parse_response fails
         return pred
 
 

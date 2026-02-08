@@ -53,5 +53,13 @@ def parse_response(response: str) -> Prediction:
     return Prediction(country=country, lat=lat, lng=lng)
 
 
+def parse_response_with_exception_handler(response: str) -> Prediction | None:
+    try:
+        return parse_response(response)
+    except ValueError:
+        # return None if parse_response fails
+        return None
+
+
 if __name__ == '__main__':
     pass
