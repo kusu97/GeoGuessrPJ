@@ -4,7 +4,7 @@ from models.base import Prediction
 class BaseBenchmark(ABC):
 
     @abstractmethod
-    def evaluate(self, sample: dict, pred: Prediction) -> dict:
+    def evaluate(self, sample: dict, pred: Prediction | None) -> dict:
         """
         sample: one sample in the dataset
             MUST be a dict with keys:
@@ -12,7 +12,7 @@ class BaseBenchmark(ABC):
             - lat
             - lng
             - country (optional)
-        pred: model prediction
+        pred: model prediction (is None indicates a parser failure)
         return: dict of sample information and metrics
         """
         pass

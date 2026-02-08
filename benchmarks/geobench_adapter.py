@@ -26,7 +26,8 @@ class GeoBenchAdapter(BaseBenchmark):
 
     def __init__(self):
         self.scale = self._compute_scale()
-        self.results = []       # Store the results for the entire dataset
+        self.results = []       # Store the results for the entire dataset (not including those in self.failure)
+        self.failure = []       # Store the samples causing parser failure
         self.summary = {}       # Store the summary for the entire dataset
 
     def _compute_scale(self):
@@ -43,8 +44,20 @@ class GeoBenchAdapter(BaseBenchmark):
     def _get_GT_from_sample(self, sample: dict):
         return GeoBenchGT(country=sample["country"], lat=sample["lat"], lng=sample["lng"])
 
-    def evaluate(self, sample: dict, pred: Prediction):
+    def evaluate(self, sample: dict, pred: Prediction | None):
         gt = self._get_GT_from_sample(sample)
+
+        if pred is None:
+            # handle parser failure cases
+            info = {
+                "image_path": sample["image_path"],
+                "gt": gt.to_dict(),
+                "pred": pred
+            }
+
+            self.failure.append(info)
+            return info
+
         distance = haversine.haversine(
             (gt.lat, gt.lng),
             (pred.lat, pred.lng)
@@ -70,10 +83,15 @@ class GeoBenchAdapter(BaseBenchmark):
         if len(self.results) == 0:
             raise RuntimeError("No results to summarize. Run evaluation first.")
 
+        num_results = len(self.results)
+        num_failure = len(self.failure)
+
         self.summary =  {
-            "avg_distance": sum(r["metrics"]["distance_km"] for r in self.results) / len(self.results),
-            "avg_score": sum(r["metrics"]["score"] for r in self.results) / len(self.results),
-            "country_acc": sum(r["metrics"]["country_correct"] for r in self.results) / len(self.results)
+            "num_success": num_results,
+            "num_failure": num_failure,
+            "avg_distance": sum(r["metrics"]["distance_km"] for r in self.results) / num_results,
+            "avg_score": sum(r["metrics"]["score"] for r in self.results) / num_results,
+            "country_acc": sum(r["metrics"]["country_correct"] for r in self.results) / num_results
         }
 
         return self.summary
@@ -100,6 +118,7 @@ class GeoBenchAdapter(BaseBenchmark):
             },
             "summary": self.summary,
             "results": self.results,
+            "parser_failure": self.failure
         }
 
         if extra_meta is not None:
