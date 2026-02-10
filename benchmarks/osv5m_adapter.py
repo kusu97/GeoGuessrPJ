@@ -194,7 +194,7 @@ class OSV5MAdapter(BaseBenchmark):
         output = {
             "meta": {
                 "benchmark": "OSV5M",
-                "num_samples": len(self.results),
+                "num_samples": len(self.results) + len(self.failure),
                 "timestamp": timestamp,
             },
             "summary": self.summary,

@@ -104,7 +104,7 @@ class GeoScore(BaseBenchmark):
         output = {
             "meta": {
                 "benchmark": "GeoScore",
-                "num_samples": len(self.results),
+                "num_samples": len(self.results) + len(self.failure),
                 "timestamp": timestamp,
             },
             "summary": self.summary,

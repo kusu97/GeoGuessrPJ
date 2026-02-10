@@ -113,7 +113,7 @@ class GeoBenchAdapter(BaseBenchmark):
         output = {
             "meta": {
                 "benchmark": "GeoBench",
-                "num_samples": len(self.results),
+                "num_samples": len(self.results) + len(self.failure),
                 "timestamp": timestamp,
             },
             "summary": self.summary,
