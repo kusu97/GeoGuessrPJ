@@ -40,10 +40,11 @@ class QwenModel(BaseModel):
                 },
             ],
             stream=False,
+            max_tokens=2000,
             # enable_thinking 参数开启思考过程，thinking_budget 参数设置最大推理过程 Token 数
             extra_body={
                 'enable_thinking': self.enable_thinking,
-                "thinking_budget": 81920},
+                "thinking_budget": 5000},
         )
 
         message = completion.choices[0].message
