@@ -49,10 +49,10 @@ def main():
 
     # 4. Initialize the model
     # model = DummyModel()
-    # model = QwenModel(model_name="qwen-vl-max-2025-04-08", enable_thinking=False, save_responses=True)
-    model = QwenModel(model_name="qwen3-vl-plus", enable_thinking=True, save_responses=True)
-    # model = QwenModel(model_name="Qwen3-VL-8B-Instruct", enable_thinking=False, save_responses=True)
-    # model = QwenModel(model_name="Qwen3-VL-8B-Thinking", enable_thinking=False, save_responses=True)
+    # model = QwenModel(model_name="qwen-vl-max-2025-04-08")
+    model = QwenModel(model_name="qwen3-vl-plus", enable_thinking=True)
+    # model = QwenModel(model_name="Qwen3-VL-8B-Instruct")
+    # model = QwenModel(model_name="Qwen3-VL-8B-Thinking")
 
     # 5. Start the evaluation
     for i in tqdm(range(len(dataset)), desc="Evaluating"):
@@ -71,7 +71,7 @@ def main():
 
     # 7. Save all the information from the experiment
     extra_meta={
-        "model": model.model_name,
+        "model_info": model.info,
         "dataset": dataset.name, 
         "prompt_name": prompt_name
     }

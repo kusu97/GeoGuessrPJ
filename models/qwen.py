@@ -11,10 +11,21 @@ class QwenModel(BaseModel):
     class for Qwen-vl model
     """
 
-    def __init__(self, model_name="qwen3-vl-plus", enable_thinking=False, save_responses=True):
+    def __init__(self, model_name="qwen3-vl-plus", temperature=0.0, max_tokens=2000, 
+                 enable_thinking=False, thinking_budget=5000, save_responses=True):
         self.enable_thinking = enable_thinking
         self.model_name = model_name
         self.save_responses = save_responses
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+        self.thinking_budget = thinking_budget
+        
+        self.info = {"model_name": model_name,
+                     "temperature": temperature,
+                     "max_tokens": max_tokens,
+                     "enable_thinking": enable_thinking,
+                     "thinking_budget": thinking_budget,
+                     "save_responses": save_responses}
         
         self.client = OpenAI(
             api_key= os.getenv("DASHSCOPE_API_KEY"),
@@ -40,11 +51,12 @@ class QwenModel(BaseModel):
                 },
             ],
             stream=False,
-            max_tokens=2000,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
             # enable_thinking 参数开启思考过程，thinking_budget 参数设置最大推理过程 Token 数
             extra_body={
                 'enable_thinking': self.enable_thinking,
-                "thinking_budget": 5000},
+                "thinking_budget": self.thinking_budget},
         )
 
         message = completion.choices[0].message
@@ -166,7 +178,10 @@ class QwenModel(BaseModel):
 
         data = {
             "model_name": self.model_name,
+            "temperature": self.temperature,
+            "max_tokens": self.max_tokens,
             "enable_thinking": self.enable_thinking,
+            "thinking_budget": self.thinking_budget,
             "prompt": prompt,
             "image_path": image_path,
             "reasoning_content": response.get("reasoning_content", ""),

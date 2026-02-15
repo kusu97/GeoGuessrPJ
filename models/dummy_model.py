@@ -12,7 +12,7 @@ class DummyModel(BaseModel):
         """
         Default prediction: shibuya, Tokyo, Japan
         """
-        self.model_name = "Dummy Model"
+        self.info = {"model_name": "Dummy Model"}
         self.country = country
         self.lat = lat
         self.lng = lng
