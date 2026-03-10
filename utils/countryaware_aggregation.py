@@ -1,6 +1,6 @@
 '''
 A script performing country-aware aggregation for multiple geolocation predictions, 
-used in the self-consistency experiment.
+used in the self-consistency and prompt ensemble experiment.
 '''
 
 from models.base import Prediction
