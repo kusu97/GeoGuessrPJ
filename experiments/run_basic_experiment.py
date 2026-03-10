@@ -71,6 +71,7 @@ def main():
 
     # 7. Save all the information from the experiment
     extra_meta={
+        "experiment": "basic",
         "model_info": model.info,
         "dataset": dataset.name, 
         "prompt_name": prompt_name
