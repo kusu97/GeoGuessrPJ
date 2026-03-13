@@ -31,7 +31,7 @@ def main(existing_results_path):
     for path in existing_results_path:
         with open(path) as f:
             existing_result = json.load(f)
-    existing_results.append(existing_result)
+        existing_results.append(existing_result)
     
     # 1. Prepare the dataset
     dataset = Osv5mDataset(max_samples=200)
