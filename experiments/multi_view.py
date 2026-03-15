@@ -29,12 +29,12 @@ from models.multi_view_qwen import QwenModel
 
 def main():
     # 1. Prepare the dataset
-    dataset = MultiViewFairLocatorDataset(dataset_name="Breadth", num_views=10, max_samples=2)
+    dataset = MultiViewFairLocatorDataset(dataset_name="Breadth", num_views=10, max_samples=None)
 
     # 2. Load the prompt
     prompt_manager = PromptManager()
-    # prompt_name = "explicit_CoT"
-    prompt_name = "light_reasoning"
+    prompt_name = "explicit_CoT"
+    # prompt_name = "light_reasoning"
     # prompt_name = "direct_prediction"
     # prompt_name = "expert_persona"
     prompt = prompt_manager.get_prompt(prompt_name)
@@ -50,8 +50,8 @@ def main():
     benchmark = OSV5MAdapter()
 
     # 4. Initialize the model
-    model = QwenModel(model_name="qwen-vl-max-2025-04-08")
-    # model = QwenModel(model_name="qwen3-vl-plus", enable_thinking=True)
+    # model = QwenModel(model_name="qwen-vl-max-2025-04-08")
+    model = QwenModel(model_name="qwen3-vl-plus", enable_thinking=True)
     # model = QwenModel(model_name="Qwen3-VL-8B-Instruct")
     # model = QwenModel(model_name="Qwen3-VL-8B-Thinking")
 
