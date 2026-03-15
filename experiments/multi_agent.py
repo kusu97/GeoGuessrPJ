@@ -20,6 +20,7 @@ from geodatasets.osv5m_dataset import Osv5mDataset
 from geodatasets.fairlocator_dataset import FairLocatorDataset
 from benchmarks.osv5m_adapter import OSV5MAdapter
 from models.multi_agent_collaboration import MultiAgentCollaboration
+from models.multi_agent_debate import MultiAgentDebate
 
 def main():
     # 1. Prepare the dataset
@@ -44,8 +45,9 @@ def main():
         "temperature": 0.0,
         "max_tokens": 2000
     }
-    # Note: The three client_info can be different
+    # Note: The client_info for each agent can be different
     pipeline = MultiAgentCollaboration(client_info, client_info, client_info)
+    # pipeline = MultiAgentDebate(client_info, client_info, client_info)
 
     # 4. Start the evaluation
     async def run_evaluation(dataset, benchmark):
