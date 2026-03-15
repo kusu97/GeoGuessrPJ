@@ -1,0 +1,155 @@
+from models.base import BaseModel
+from utils.parser import parse_response_with_exception_handler
+from openai import OpenAI
+import os
+import base64
+import json
+import time
+
+class QwenModel(BaseModel):
+    """
+    class for Qwen-vl model, specified for the multi-view reasoning experiment
+    """
+
+    def __init__(self, model_name="qwen3-vl-plus", temperature=0.0, max_tokens=2000, 
+                 enable_thinking=False, thinking_budget=5000, save_responses=True):
+        self.enable_thinking = enable_thinking
+        self.model_name = model_name
+        self.save_responses = save_responses
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+        self.thinking_budget = thinking_budget
+        
+        self.info = {"model_name": model_name,
+                     "temperature": temperature,
+                     "max_tokens": max_tokens,
+                     "enable_thinking": enable_thinking,
+                     "thinking_budget": thinking_budget,
+                     "save_responses": save_responses}
+        
+        self.client = OpenAI(
+            api_key= os.getenv("DASHSCOPE_API_KEY"),
+            base_url= "https://dashscope.aliyuncs.com/compatible-mode/v1"
+        )
+    
+    def chat_with_mllm(self, images, prompt):
+        # 创建聊天完成请求
+        image_contents = []
+        for image_base64, media_type in images:
+            image_content = {
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:{media_type};base64,{image_base64}"
+                }
+            }
+            image_contents.append(image_content)
+
+        contents = image_contents + [{"type": "text", "text": prompt}]
+
+        completion = self.client.chat.completions.create(
+            model=self.model_name,
+            messages=[
+                {
+                    "role": "user",
+                    "content": contents,
+                },
+            ],
+            stream=False,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens,
+            # enable_thinking 参数开启思考过程，thinking_budget 参数设置最大推理过程 Token 数
+            extra_body={
+                'enable_thinking': self.enable_thinking,
+                "thinking_budget": self.thinking_budget},
+        )
+
+        message = completion.choices[0].message
+        usage = completion.usage
+
+        answer_content = message.content
+        reasoning_content = getattr(message, "reasoning_content", "")
+
+        return {"reasoning_content": reasoning_content,
+                "answer_content": answer_content, 
+                "usage": usage}
+
+    def encode_image_to_base64(self, image_path):
+        media_type = self.get_image_media_type(image_path)
+        with open(image_path, "rb") as f:
+            img_data = base64.b64encode(f.read()).decode("utf-8")
+        return img_data, media_type
+    
+    def get_image_media_type(self, image_path: str) -> str:
+        """Determine the media type based on file extension."""
+        ext = os.path.splitext(image_path)[1].lower()
+        if ext == '.png':
+            return "image/png"
+        elif ext in ['.jpg', '.jpeg']:
+            return "image/jpeg"
+        else:
+            return "image/jpeg" # Default fallback
+
+    def save_response(self, prompt: str, image_paths: list[str], response: dict, save_dir: str = "./records/responses"):
+        """
+        Save model response to a JSON file.
+        
+        If two calls occur within one second, an overwrite error may happen; 
+        however, at this stage, this remains only a theoretical risk.
+        """
+        os.makedirs(save_dir, exist_ok=True)
+
+        timestamp = time.strftime("%Y-%m-%d_%H-%M-%S")
+        filename = f"{timestamp}.json"
+        save_path = os.path.join(save_dir, filename)
+
+        # 将 usage 转成字典，如果是 None 则保留 None
+        usage_dict = None
+        usage = response.get("usage", None)
+        if usage:
+            prompt_details = getattr(usage, "prompt_tokens_details", None)
+            completion_details = getattr(usage, "completion_tokens_details", None)
+            usage_dict = {
+                "prompt_tokens": getattr(usage, "prompt_tokens", None),
+                "completion_tokens": getattr(usage, "completion_tokens", None),
+                "total_tokens": getattr(usage, "total_tokens", None),
+
+                "prompt_image_tokens": getattr(prompt_details, "image_tokens", None),
+                "prompt_text_tokens": getattr(prompt_details, "text_tokens", None),
+
+                "completion_text_tokens": getattr(completion_details, "text_tokens", None),
+                "completion_reasoning_tokens": getattr(completion_details, "reasoning_tokens", None),
+            }
+
+        data = {
+            "model_name": self.model_name,
+            "temperature": self.temperature,
+            "max_tokens": self.max_tokens,
+            "enable_thinking": self.enable_thinking,
+            "thinking_budget": self.thinking_budget,
+            "prompt": prompt,
+            "image_paths": image_paths,
+            "reasoning_content": response.get("reasoning_content", ""),
+            "answer_content": response.get("answer_content", ""),
+            "usage": usage_dict,
+            "timestamp": timestamp,
+        }
+
+        with open(save_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+
+        return save_path
+    
+    def predict(self, image_paths: list[str], prompt: str):
+        images = []
+        for image_path in image_paths:
+            images.append(self.encode_image_to_base64(image_path))
+        response = self.chat_with_mllm(images, prompt)
+        if self.save_responses:
+            self.save_response(prompt, image_paths, response)
+        answer_content = response["answer_content"]
+        pred = parse_response_with_exception_handler(answer_content)    # pred = None if parse_response fails
+        return pred
+
+
+if __name__ == '__main__':
+    model = QwenModel("qwen-vl-max-2025-04-08")

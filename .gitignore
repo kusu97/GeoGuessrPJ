@@ -37,6 +37,8 @@ scripts/
 # LLM APIs provided by a lab at my college
 qwen_lab_instruct.py
 qwen_lab_thinking.py
+multi_view_qwen_lab_instruct.py
+multi_view_qwen_lab_thinking.py
 
 # Scripts created for my own convenience
 my_multi_agent.py
