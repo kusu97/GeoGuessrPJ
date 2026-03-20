@@ -9,12 +9,13 @@ The goal of this project is to build a **complete and reproducible pipeline** th
 
 ## 1. Project Overview
 
-GeoGuessr is a visual geolocation task where a model must infer the geographic location of a place based on a single first-person street-view image.
+GeoGuessr is a visual geolocation task where a multi-modal large language model must infer the geographic location of a place based on a single first-person street-view image.
 
 In this project, we:
-- Use **multimodal large language models via online APIs**
+- Use **multi-modal large language models via online APIs**
 - Perform **location prediction from street-view images**
 - Evaluate predictions using **standard geolocation benchmarks**
+- Explore and validate **potential optimization schemes**
 
 ---
 
@@ -41,20 +42,19 @@ In this project, we:
 ```
 .
 ├── geodatasets/ # GeoGuessr-style street-view datasets
-├── models/ # Model interface codes
-├── benchmarks/ # Geolocation benchmark codes
+├── models/ # Model interface codes and multi-agent pipelines
+├── benchmarks/ # Geolocation benchmarks
 ├── prompts/ # Different prompts
-├── experiments/
-│ └── run_basic_experiment.py # Run basic experiment
+├── experiments/ # Basic and exploratory experiments
+│ └── run_basic_experiment.py
+│ └── self_consistency.py
+│ └── multi-agent.py
+│ └── ...
 ├── records/ # Records of experiment results
-├── references/ # Other project scripts used as references
-├── scripts/ # Various scripts to be refined and archived
 ├── utils/ # Utility scripts
 ├── README.md
 └── environment.yml
 ```
-
-> Note: The structure may be modified during future experiments.
 
 ---
 
@@ -65,6 +65,11 @@ This project primarily uses **online multimodal model APIs**, such as:
 
 The choice of API allows rapid experimentation without local deployment constraints.
 
+Besides, the **multi-agent pipelines** (implemented using AutoGen) are also defined here, including:
+- multi-agent collaboration
+- multi-agent debate
+- self-refine
+
 ---
 
 ## 5. Benchmarks
@@ -74,7 +79,7 @@ Standard **GeoGuessr-style geolocation benchmarks** are used, including:
 - GeoScore
 - Osv-5m
 
-The benchmark is executed **locally**, while model inference is performed via API calls.
+The benchmark is executed locally, while model inference is performed via API calls.
 
 ---
 
@@ -86,12 +91,24 @@ This project uses **GeoGuessr-style street-view image datasets** for visual geol
 
 ---
 
-## 7. Basic Workflow
+## 7. Experiments
 
-The basic experimental pipeline follows these steps:
+The **basic experimental pipeline** (run_basic_experiment.py) follows these steps:
 
 1. Load a street-view dataset
 2. Send image + prompt to a multimodal model API
 3. Parse the model’s textual output to obtain geographic information
 4. Run benchmark evaluation
 5. Analyze and save results
+
+Some **preliminary comparative experiments** (e.g., studies on prompt design and model choices) were tested using this pipeline structure, and **all extended experiments** (e.g., self-consistency and multi-agent collaboration) are built upon it.
+
+**Further optimization schemes** include:
+
+- multi-agent experiments(including multi-agent collaboration, multi-agent debate and iterative self-refine)
+- multi-view input
+- prompt ensemble
+- self-consistency
+- PESC (combined Prompt Ensemble and Self-Consistency)
+
+For implementation details of these strategies, please refer to the corresponding source code.
